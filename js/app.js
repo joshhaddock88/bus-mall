@@ -42,19 +42,24 @@ function renderProducts() {
 } 
 
 function productPicker() {
-  const productOneIndex = Math.floor(Math.random() * Product.allImages.length);
-  let productTwoIndex;
-  let productThreeIndex;
-  while (productTwoIndex === productOneIndex || productTwoIndex === undefined) {
-    productTwoIndex = Math.floor(Math.random() * Product.allImages.length);
+  let previousProducts = [];
+  previousProducts.push(productOne);
+  previousProducts.push(productTwo);
+  previousProducts.push(productThree);
+  while (previousProducts.includes(productOne)) {
+    let productOneIndex = Math.floor(Math.random() * Product.allImages.length);
+    productOne = Product.allImages[productOneIndex];
   }
-  while (productThreeIndex === productOneIndex || productThreeIndex === productTwoIndex || productThreeIndex === undefined) {
-    productThreeIndex = Math.floor(Math.random() * Product.allImages.length);
+  previousProducts.push(productOne);
+  while (previousProducts.includes(productTwo)) {
+    let productTwoIndex = Math.floor(Math.random() * Product.allImages.length);
+    productTwo = Product.allImages[productTwoIndex];
   }
-
-  productOne = Product.allImages[productOneIndex];
-  productTwo = Product.allImages[productTwoIndex];
-  productThree = Product.allImages[productThreeIndex];
+  previousProducts.push(productTwo);
+  while (previousProducts.includes(productThree)) {
+    let productThreeIndex = Math.floor(Math.random() * Product.allImages.length);
+    productThree = Product.allImages[productThreeIndex];
+  }
 }
 
 function displayVoteCount() {
