@@ -1,13 +1,14 @@
 'use strict'
 // --------------------------------------------- Global Variables -------------------------------------------------------//
-const results = document.getElementById('productClicks')
+const results = document.getElementById('results')
 const allProducts = document.getElementById('allProducts')
 const productOneImg = document.getElementById('productOneImg');
 const productTwoImg = document.getElementById('productTwoImg');
 const productThreeImg = document.getElementById('productThreeImg');
-const productOne_pElem = document.getElementById('img1_p');
-const productTwo_pElem = document.getElementById('img2_p');
-const productThree_pElem = document.getElementById('img3_p');
+const productOnePElem = document.getElementById('productOnePElem');
+const productTwoPElem = document.getElementById('productTwoPElem');
+const productThreePElem = document.getElementById('productThreePElem');
+const numberOfRounds = 25;
 
 let totalClicks = 0;
 
@@ -35,9 +36,9 @@ function renderProducts() {
     productOneImg.src = productOne.imagePath;
     productTwoImg.src = productTwo.imagePath;
     productThreeImg.src = productThree.imagePath;
-    productOne_pElem.textContent = productOne.name;
-    productTwo_pElem.textContent = productTwo.name;
-    productThree_pElem.textContent = productThree.name;
+    productOnePElem.textContent = productOne.name;
+    productTwoPElem.textContent = productTwo.name;
+    productThreePElem.textContent = productThree.name;
 } 
 
 function productPicker() {
@@ -57,7 +58,7 @@ function productPicker() {
 }
 
 function displayVoteCount() {
-  results.innterHTML = '';
+  results.innerHTML = ' ';
   let h2Elem = document.createElement('h2');
   h2Elem.textContent = 'Product Likes';
   results.appendChild(h2Elem);
@@ -72,7 +73,7 @@ function handleClick(event) {
   const clickedTarget = event.target;
   const id = clickedTarget.id;
 
-  if(totalClicks < 5) {
+  if(totalClicks < numberOfRounds) {
     if(id === 'productOneImg' || id === 'productTwoImg' || id === 'productThreeImg') {
       if (id === 'productOneImg') {
         productOne.clicks++;
@@ -89,7 +90,7 @@ function handleClick(event) {
       renderProducts();
     }
   }
-  if(totalClicks === 5) {
+  if(totalClicks === numberOfRounds) {
     allProducts.removeEventListener('click', handleClick);
     displayVoteCount();
   }
