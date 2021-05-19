@@ -8,6 +8,7 @@ const productThreeImg = document.getElementById('productThreeImg');
 const productOnePElem = document.getElementById('productOnePElem');
 const productTwoPElem = document.getElementById('productTwoPElem');
 const productThreePElem = document.getElementById('productThreePElem');
+const viewResults = document.getElementById('viewResults')
 const numberOfRounds = 25;
 
 let totalClicks = 0;
@@ -97,12 +98,13 @@ function handleClick(event) {
   }
   if(totalClicks === numberOfRounds) {
     allProducts.removeEventListener('click', handleClick);
-    displayVoteCount();
+    viewResults.style.display = 'block';
   }
 }
 // --------------------------------------------- Event Listeners -------------------------------------------------------//
 
 allProducts.addEventListener('click', handleClick);
+viewResults.addEventListener('click', displayVoteCount);
 
 // --------------------------------------------- Functions Calls -------------------------------------------------------//
 
