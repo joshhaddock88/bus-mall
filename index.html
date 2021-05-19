@@ -12,9 +12,9 @@
   <body>
     <header>A</header>
     <main>
-      <section>
+      <section id="resultsSection">
         <ul id="results">
-            <h2>Product Likes</h2>
+          <h2>Product Likes</h2>
           <li>bag: 0</li>
           <li>banana: 0</li>
           <li>bathroom: 0</li>
@@ -55,14 +55,21 @@
         </div>
       
       </section>
-      <section id="article">
-        <article>
-          <img>
-          <p>C</p>
-        </article>
+      <section id="buttonAndCharts">
+        <button id="viewResults">View Results</button>
+        <canvas id="productChart" width="700" height="500"></canvas>
+        <!-- <article id="article">
+          <p>Welcome to BusMall! Where we've put together a series of banal and undesireable items that nobody would want to buy unless their cellphone died while they were on a bus. Your job is to help us select the least worst items. We'll show you a line up of three items, and then you can choose which of the three items repulses you the least. Once you've made 25 selections, which may not sound like many but believe me it's an eternity, you'll be able to view your results in a chart. Enjoy!</p>
+        </article> -->
       </section>
     </main>
-    <footer>B</footer>
+    <footer>
+      <a>About</a>
+      <a>Company</a>
+      <a>Connect</a>
+      <a>Customer Service</a>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.1.1/dist/chart.min.js"></script>
     <script src="./js/app.js"></script>
   </body>
 </html>
