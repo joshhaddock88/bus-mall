@@ -6,7 +6,7 @@ const productOneImg = document.getElementById('productOneImg');
 const productTwoImg = document.getElementById('productTwoImg');
 const productThreeImg = document.getElementById('productThreeImg');
 const viewResults = document.getElementById('viewResults')
-const numberOfRounds = 5;
+const numberOfRounds = 25;
 Product.allProducts = [];
 
 let totalClicks = 0;
@@ -171,7 +171,41 @@ function getDataFromStorage() {
       console.log(`${product.name} has times shown`, timesShown);
       makeProducts(product.name, product.imagePath, clicks, timesShown);
     }
-    renderChart();
+    imagePicker();
+    renderImages();
+  }
+}
+
+function makeAllProducts() {
+  makeProducts('bag', './img/bag.jpg', 0, 0);
+  makeProducts('banana', './img/banana.jpg', 0, 0);
+  makeProducts('bathroom', './img/bathroom.jpg', 0, 0);
+  makeProducts('boots', './img/boots.jpg', 0, 0);
+  makeProducts('breakfast', './img/breakfast.jpg', 0, 0);
+  makeProducts('bubblegum', './img/bubblegum.jpg', 0, 0);
+  makeProducts('chair', './img/chair.jpg', 0, 0);
+  makeProducts('cthulhu', './img/cthulhu.jpg', 0, 0);
+  makeProducts('dog-duck', './img/dog-duck.jpg', 0, 0);
+  makeProducts('dragon', './img/dragon.jpg', 0, 0);
+  makeProducts('pen', './img/pen.jpg', 0, 0);
+  makeProducts('pet-sweep', './img/pet-sweep.jpg', 0, 0);
+  makeProducts('scissors', './img/scissors.jpg', 0, 0);
+  makeProducts('shark', './img/shark.jpg', 0, 0);
+  makeProducts('sweep', './img/sweep.png', 0, 0);
+  makeProducts('tauntaun', './img/tauntaun.jpg', 0, 0);
+  makeProducts('unicorn', './img/unicorn.jpg', 0, 0);
+  makeProducts('usb', './img/usb.gif', 0, 0);
+  makeProducts('water-can', './img/water-can.jpg', 0, 0);
+  makeProducts('wine-glass', './img/wine-glass.jpg', 0, 0);
+}
+
+function createPage() {
+  let dataFromStorage = localStorage.getItem('previousData');
+  if(dataFromStorage) {
+    getDataFromStorage()
+  } else {
+    makeAllProducts();
+    imagePicker();
     renderImages();
   }
 }
@@ -184,30 +218,9 @@ viewResults.addEventListener('click', renderChart);
 
 // --------------------------------------------- Functions Calls -------------------------------------------------------//
 
-makeProducts('bag', './img/bag.jpg', 0, 0);
-makeProducts('banana', './img/banana.jpg', 0, 0);
-makeProducts('bathroom', './img/bathroom.jpg', 0, 0);
-makeProducts('boots', './img/boots.jpg', 0, 0);
-makeProducts('breakfast', './img/breakfast.jpg', 0, 0);
-makeProducts('bubblegum', './img/bubblegum.jpg', 0, 0);
-makeProducts('chair', './img/chair.jpg', 0, 0);
-makeProducts('cthulhu', './img/cthulhu.jpg', 0, 0);
-makeProducts('dog-duck', './img/dog-duck.jpg', 0, 0);
-makeProducts('dragon', './img/dragon.jpg', 0, 0);
-makeProducts('pen', './img/pen.jpg', 0, 0);
-makeProducts('pet-sweep', './img/pet-sweep.jpg', 0, 0);
-makeProducts('scissors', './img/scissors.jpg', 0, 0);
-makeProducts('shark', './img/shark.jpg', 0, 0);
-makeProducts('sweep', './img/sweep.png', 0, 0);
-makeProducts('tauntaun', './img/tauntaun.jpg', 0, 0);
-makeProducts('unicorn', './img/unicorn.jpg', 0, 0);
-makeProducts('usb', './img/usb.gif', 0, 0);
-makeProducts('water-can', './img/water-can.jpg', 0, 0);
-makeProducts('wine-glass', './img/wine-glass.jpg', 0, 0);
+createPage();
 
-imagePicker();
-renderImages();
-getDataFromStorage();
+console.log(Product.allProducts);
 
 // set dataFromStorage as global variable.
 // Create a function that will either create new products, or grab old data.
