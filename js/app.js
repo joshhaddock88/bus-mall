@@ -5,61 +5,58 @@ const allProducts = document.getElementById('allProducts')
 const productOneImg = document.getElementById('productOneImg');
 const productTwoImg = document.getElementById('productTwoImg');
 const productThreeImg = document.getElementById('productThreeImg');
-const productOnePElem = document.getElementById('productOnePElem');
-const productTwoPElem = document.getElementById('productTwoPElem');
-const productThreePElem = document.getElementById('productThreePElem');
 const viewResults = document.getElementById('viewResults')
-const numberOfRounds = 25;
+const numberOfRounds = 5;
+Product.allProducts = [];
 
 let totalClicks = 0;
 
-let productOne = null;
-let productTwo = null;
-let productThree = null;
+let imageOne = null;
+let imageTwo = null;
+let imageThree = null;
 
 // --------------------------------------------- Constructor Functions -------------------------------------------------------//
-
-function Product(name, imagePath) {
+//edit this to add clicks and timesShown
+function Product(name, imagePath, clicks, timesShown) {
   this.name = name;
   this.imagePath = imagePath;
-  this.clicks = 0;
-  this.timesShown = 0;
-
-  Product.allImages.push(this);
+  this.clicks = clicks;
+  this.timesShown = timesShown;
 }
-
-Product.allImages = [];
 
 // --------------------------------------------- Prototype Methods -------------------------------------------------------//
 
 // --------------------------------------------- Regular Functions -------------------------------------------------------//
-function renderProducts() {
-    productOneImg.src = productOne.imagePath;
-    productTwoImg.src = productTwo.imagePath;
-    productThreeImg.src = productThree.imagePath;
-    productOnePElem.textContent = productOne.name;
-    productTwoPElem.textContent = productTwo.name;
-    productThreePElem.textContent = productThree.name;
+// add 0, 0 to this to save number
+function makeProducts(name, imagePath, clicks, timesShown) {
+  const product = new Product(name, imagePath, clicks, timesShown);
+  Product.allProducts.push(product);
+}
+
+function renderImages() {
+    productOneImg.src = imageOne.imagePath;
+    productTwoImg.src = imageTwo.imagePath;
+    productThreeImg.src = imageThree.imagePath;
 } 
 
-function productPicker() {
-  let previousProducts = [];
-  previousProducts.push(productOne);
-  previousProducts.push(productTwo);
-  previousProducts.push(productThree);
-  while (previousProducts.includes(productOne)) {
-    let productOneIndex = Math.floor(Math.random() * Product.allImages.length);
-    productOne = Product.allImages[productOneIndex];
+function imagePicker() {
+  let previousImages = [];
+  previousImages.push(imageOne);
+  previousImages.push(imageTwo);
+  previousImages.push(imageThree);
+  while (previousImages.includes(imageOne)) {
+    let imageOneIndex = Math.floor(Math.random() * Product.allProducts.length);
+    imageOne = Product.allProducts[imageOneIndex];
   }
-  previousProducts.push(productOne);
-  while (previousProducts.includes(productTwo)) {
-    let productTwoIndex = Math.floor(Math.random() * Product.allImages.length);
-    productTwo = Product.allImages[productTwoIndex];
+  previousImages.push(imageOne);
+  while (previousImages.includes(imageTwo)) {
+    let imageTwoIndex = Math.floor(Math.random() * Product.allProducts.length);
+    imageTwo = Product.allProducts[imageTwoIndex];
   }
-  previousProducts.push(productTwo);
-  while (previousProducts.includes(productThree)) {
-    let productThreeIndex = Math.floor(Math.random() * Product.allImages.length);
-    productThree = Product.allImages[productThreeIndex];
+  previousImages.push(imageTwo);
+  while (previousImages.includes(imageThree)) {
+    let imageThreeIndex = Math.floor(Math.random() * Product.allProducts.length);
+    imageThree = Product.allProducts[imageThreeIndex];
   }
 }
 
@@ -68,7 +65,7 @@ function displayVoteCount() {
   let h2Elem = document.createElement('h2');
   h2Elem.textContent = 'Product Likes';
   results.appendChild(h2Elem);
-  for(let product of Product.allImages) {
+  for(let product of Product.allProducts) {
     const liElem = document.createElement('li');
     liElem.textContent = `${product.name}: ${product.clicks}`;
     results.appendChild(liElem);
@@ -78,16 +75,14 @@ function displayVoteCount() {
 
 function renderChart() {
   let labelData = [];
-  for(let i = 0; i < Product.allImages.length; i++) {
-    let product = Product.allImages[i];
+  let voteData = [];
+
+  for(let product of Product.allProducts) {
+    voteData.push(product.clicks);
     labelData.push(product.name);
   }
-  let voteData = [];
-  for(let product of Product.allImages) {
-    voteData.push(product.clicks);
-  }
-  console.log(labelData);
-  console.log(voteData);
+  console.log('label data', labelData);
+  console.log('vote data', voteData);
 
   let ctx = document.getElementById('productChart').getContext('2d');
   let productChart = new Chart(ctx, {
@@ -138,18 +133,20 @@ function handleClick(event) {
   if(totalClicks < numberOfRounds) {
     if(id === 'productOneImg' || id === 'productTwoImg' || id === 'productThreeImg') {
       if (id === 'productOneImg') {
-        productOne.clicks++;
+        imageOne.clicks++;
       } else if (id === 'productTwoImg') {
-        productTwo.clicks++;
+        imageTwo.clicks++;
       } else {
-        productThree.clicks++;
+        imageThree.clicks++;
       }
       totalClicks++;
-      productOne.timesShown++;
-      productTwo.timesShown++;
-      productThree.timesShown++;
-      productPicker();
-      renderProducts();
+      imageOne.timesShown++;
+      imageTwo.timesShown++;
+      imageThree.timesShown++;
+      
+      updateStorageData();
+      imagePicker();
+      renderImages();
     }
   }
   if(totalClicks === numberOfRounds) {
@@ -157,6 +154,28 @@ function handleClick(event) {
     viewResults.style.display = 'block';
   }
 }
+
+function updateStorageData() {
+  const stringifiedProducts = JSON.stringify(Product.allProducts);
+  localStorage.setItem('previousData', stringifiedProducts);
+}
+
+function getDataFromStorage() {
+  let dataFromStorage = localStorage.getItem('previousData');
+  if(dataFromStorage) {
+    let parsedData = JSON.parse(dataFromStorage);
+    for(let product of parsedData) {
+      let clicks = Number(product.clicks);
+      let timesShown = Number(product.timesShown);
+      console.log(`${product.name} has click`, clicks);
+      console.log(`${product.name} has times shown`, timesShown);
+      makeProducts(product.name, product.imagePath, clicks, timesShown);
+    }
+    renderChart();
+    renderImages();
+  }
+}
+
 // --------------------------------------------- Event Listeners -------------------------------------------------------//
 
 allProducts.addEventListener('click', handleClick);
@@ -165,29 +184,30 @@ viewResults.addEventListener('click', renderChart);
 
 // --------------------------------------------- Functions Calls -------------------------------------------------------//
 
-new Product('bag', './img/bag.jpg');
-new Product('banana', './img/banana.jpg');
-new Product('bathroom', './img/bathroom.jpg');
-new Product('boots', './img/boots.jpg');
-new Product('breakfast', './img/breakfast.jpg');
-new Product('bubblegum', './img/bubblegum.jpg');
-new Product('chair', './img/chair.jpg');
-new Product('cthulhu', './img/cthulhu.jpg');
-new Product('dog-duck', './img/dog-duck.jpg');
-new Product('dragon', './img/dragon.jpg');
-new Product('pen', './img/pen.jpg');
-new Product('pet-sweep', './img/pet-sweep.jpg');
-new Product('scissors', './img/scissors.jpg');
-new Product('shark', './img/shark.jpg');
-new Product('sweep', './img/sweep.png');
-new Product('tauntaun', './img/tauntaun.jpg');
-new Product('unicorn', './img/unicorn.jpg');
-new Product('usb', './img/usb.gif');
-new Product('water-can', './img/water-can.jpg');
-new Product('wine-glass', './img/wine-glass.jpg');
+makeProducts('bag', './img/bag.jpg', 0, 0);
+makeProducts('banana', './img/banana.jpg', 0, 0);
+makeProducts('bathroom', './img/bathroom.jpg', 0, 0);
+makeProducts('boots', './img/boots.jpg', 0, 0);
+makeProducts('breakfast', './img/breakfast.jpg', 0, 0);
+makeProducts('bubblegum', './img/bubblegum.jpg', 0, 0);
+makeProducts('chair', './img/chair.jpg', 0, 0);
+makeProducts('cthulhu', './img/cthulhu.jpg', 0, 0);
+makeProducts('dog-duck', './img/dog-duck.jpg', 0, 0);
+makeProducts('dragon', './img/dragon.jpg', 0, 0);
+makeProducts('pen', './img/pen.jpg', 0, 0);
+makeProducts('pet-sweep', './img/pet-sweep.jpg', 0, 0);
+makeProducts('scissors', './img/scissors.jpg', 0, 0);
+makeProducts('shark', './img/shark.jpg', 0, 0);
+makeProducts('sweep', './img/sweep.png', 0, 0);
+makeProducts('tauntaun', './img/tauntaun.jpg', 0, 0);
+makeProducts('unicorn', './img/unicorn.jpg', 0, 0);
+makeProducts('usb', './img/usb.gif', 0, 0);
+makeProducts('water-can', './img/water-can.jpg', 0, 0);
+makeProducts('wine-glass', './img/wine-glass.jpg', 0, 0);
 
-productPicker();
-console.log('product One', productOne);
-console.log('product Two', productTwo);
-console.log('product Three', productThree);
-renderProducts();
+imagePicker();
+renderImages();
+getDataFromStorage();
+
+// set dataFromStorage as global variable.
+// Create a function that will either create new products, or grab old data.
