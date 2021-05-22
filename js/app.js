@@ -165,11 +165,7 @@ function getDataFromStorage() {
   if(dataFromStorage) {
     let parsedData = JSON.parse(dataFromStorage);
     for(let product of parsedData) {
-      let clicks = Number(product.clicks);
-      let timesShown = Number(product.timesShown);
-      console.log(`${product.name} has click`, clicks);
-      console.log(`${product.name} has times shown`, timesShown);
-      makeProducts(product.name, product.imagePath, clicks, timesShown);
+      makeProducts(product.name, product.imagePath, product.clicks, product.timesShown);
     }
     imagePicker();
     renderImages();
