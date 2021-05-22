@@ -1,6 +1,11 @@
 
 header {
   height: 50px;
+  display: flex;
+}
+
+header * {
+  margin: 10px auto;
 }
 
 main {

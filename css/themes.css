@@ -2,6 +2,11 @@ header {
   background-color: rgb(174, 221, 221);
 }
 
+h1 {
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-size: 1.75em;
+}
+
 
 #resultsSection {
   background-color: aquamarine;
