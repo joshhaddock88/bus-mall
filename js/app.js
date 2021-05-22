@@ -16,7 +16,6 @@ let imageTwo = null;
 let imageThree = null;
 
 // --------------------------------------------- Constructor Functions -------------------------------------------------------//
-//edit this to add clicks and timesShown
 function Product(name, imagePath, clicks, timesShown) {
   this.name = name;
   this.imagePath = imagePath;
@@ -27,7 +26,6 @@ function Product(name, imagePath, clicks, timesShown) {
 // --------------------------------------------- Prototype Methods -------------------------------------------------------//
 
 // --------------------------------------------- Regular Functions -------------------------------------------------------//
-// add 0, 0 to this to save number
 function makeProducts(name, imagePath, clicks, timesShown) {
   const product = new Product(name, imagePath, clicks, timesShown);
   Product.allProducts.push(product);
@@ -217,6 +215,3 @@ viewResults.addEventListener('click', renderChart);
 createPage();
 
 console.log(Product.allProducts);
-
-// set dataFromStorage as global variable.
-// Create a function that will either create new products, or grab old data.
